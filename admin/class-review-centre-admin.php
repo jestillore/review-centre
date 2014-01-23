@@ -76,6 +76,7 @@ class Review_Centre_Admin {
 		 * Read more about actions and filters:
 		 * http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
+
 		add_action( '@TODO', array( $this, 'action_method_name' ) );
 		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
 

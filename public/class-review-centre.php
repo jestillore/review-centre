@@ -254,6 +254,96 @@ class Review_Centre {
 
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
 
+		register_post_type('review-centre', array(
+			'public' => true,
+			'labels' => array(
+				'name' => 'Reviews',
+				'singular_name' => __('Review', $this->plugin_slug),
+			    'add_new' => __('Add New Review', 'acf'),
+			    'add_new_item' => __('Add New Review', $this->plugin_slug),
+			    'edit_item' =>  __('Edit Review', $this->plugin_slug),
+			    'new_item' => __('New Review', $this->plugin_slug),
+			    'view_item' => __('View Review', $this->plugin_slug),
+			    'search_items' => __('Search Review', $this->plugin_slug),
+			    'not_found' =>  __('No Review found', $this->plugin_slug),
+			    'not_found_in_trash' => __('No Review found in Trash', $this->plugin_slug)
+				),
+			'supports' => array(
+				'title',
+				'custom-fields'
+				)
+			));
+
+		if(function_exists("register_field_group"))
+		{
+			register_field_group(array (
+				'id' => 'acf_reviews',
+				'title' => 'Reviews',
+				'fields' => array (
+					array (
+						'key' => 'field_52e127fe7d771',
+						'label' => 'Rating',
+						'name' => 'rating',
+						'type' => 'select',
+						'required' => 1,
+						'choices' => array (
+							1 => 1,
+							2 => 2,
+							3 => 3,
+							4 => 4,
+							5 => 5,
+						),
+						'default_value' => 1,
+						'allow_null' => 0,
+						'multiple' => 0,
+					),
+					array (
+						'key' => 'field_52e128447d772',
+						'label' => 'Email',
+						'name' => 'email',
+						'type' => 'email',
+						'required' => 1,
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+					),
+					array (
+						'key' => 'field_52e128617d773',
+						'label' => 'Phone Number',
+						'name' => 'phone_number',
+						'type' => 'text',
+						'required' => 1,
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'min' => '',
+						'max' => '',
+						'step' => '',
+					),
+				),
+				'location' => array (
+					array (
+						array (
+							'param' => 'post_type',
+							'operator' => '==',
+							'value' => 'review-centre',
+							'order_no' => 0,
+							'group_no' => 0,
+						),
+					),
+				),
+				'options' => array (
+					'position' => 'normal',
+					'layout' => 'default',
+					'hide_on_screen' => array (
+					),
+				),
+				'menu_order' => 0,
+			));
+		}
+
 	}
 
 	/**
