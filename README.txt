@@ -1,6 +1,6 @@
-=== @TODO: Review Centre ===
-Contributors: (this should be a list of wordpress.org userids)
-Donate link: http://example.com/
+=== Review Centre ===
+Contributors: Jillberth Estillore
+Donate link: http://www.jillberthestillore.com/
 Tags: comments, spam
 Requires at least: 3.5.1
 Tested up to: 3.6
