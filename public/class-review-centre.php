@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name.
+ * Review Centre.
  *
- * @package   Plugin_Name
- * @author    Your Name <email@example.com>
+ * @package   Review_Centre
+ * @author    Jillberth Estillore <contact@jillberthestillore.com>
  * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2014 Your Name or Company Name
+ * @link      http://www.jillberthestillore.com
+ * @copyright 2014 Jillberth Estillore
  */
 
 /**
@@ -14,7 +14,7 @@
  * public-facing side of the WordPress site.
  *
  * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-plugin-name-admin.php`
+ * functionality, then refer to `class-review-centre-admin.php`
  *
  * @package Review_Centre
  * @author  Jillberth Estillore <contact@jillberthestillore.com>

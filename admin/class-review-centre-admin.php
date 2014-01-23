@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name.
+ * Review Centre.
  *
  * @package   Review Centre
  * @author    Jillberth Estillore <contact@jillberthestillore.com>
@@ -14,7 +14,7 @@
  * administrative side of the WordPress site.
  *
  * If you're interested in introducing public-facing
- * functionality, then refer to `class-plugin-name.php`
+ * functionality, then refer to `class-review-centre.php`
  *
  * @package Review_Centre_Admin
  * @author  Jillberth Estillore <contact@jillberthestillore.com>
