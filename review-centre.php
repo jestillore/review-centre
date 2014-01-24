@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 define( 'ACF_LITE', true );
 
-include_once('advanced-custom-fields/acf.php');
+include_once('libraries/advanced-custom-fields/acf.php');
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
