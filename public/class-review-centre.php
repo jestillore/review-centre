@@ -430,11 +430,6 @@ class Review_Centre {
 	private function accept_form_data() {
 		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['review_form'])) {
 			$r = (object) $_POST['review_form'];
-			// $name = $_POST['review_form_name'];
-			// $rating = $_POST['review_form_rating'];
-			// $email = $_POST['review_form_email'];
-			// $phone = $_POST['review_form_phone'];
-			// $experience = $_POST['review_form_experience'];
 			$post_id = wp_insert_post(array(
 				'post_status' => 'publish', 
 			    'post_type' => 'review-centre', 
