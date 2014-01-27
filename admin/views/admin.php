@@ -28,10 +28,6 @@
 
 		<table>
 			<tr>
-				<td>Email: </td>
-				<td><input type="text" name="<?php echo $this->plugin_slug; ?>[email]" value="<?php echo $options['email']; ?>" /></td>
-			</tr>
-			<tr>
 				<td>Google: </td>
 				<td><input type="text" name="<?php echo $this->plugin_slug; ?>[google]" value="<?php echo $options['google']; ?>" /></td>
 			</tr>
