@@ -254,6 +254,69 @@ class Review_Centre {
 
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
 
+		$this->register_custom_post_type();
+
+		$this->define_shortcodes();
+
+		$this->accept_form_data();
+
+	}
+
+	/**
+	 * Register and enqueue public-facing style sheet.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_styles() {
+		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+	}
+
+	/**
+	 * Register and enqueues public-facing JavaScript files.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_scripts() {
+		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+	}
+
+	/**
+	 * NOTE:  Actions are points in the execution of a page or process
+	 *        lifecycle that WordPress fires.
+	 *
+	 *        Actions:    http://codex.wordpress.org/Plugin_API#Actions
+	 *        Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
+	 *
+	 * @since    1.0.0
+	 */
+	public function action_method_name() {
+		// @TODO: Define your action hook callback here
+	}
+
+	/**
+	 * NOTE:  Filters are points of execution in which WordPress modifies data
+	 *        before saving it or sending it to the browser.
+	 *
+	 *        Filters: http://codex.wordpress.org/Plugin_API#Filters
+	 *        Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
+	 *
+	 * @since    1.0.0
+	 */
+	public function filter_method_name() {
+		// @TODO: Define your filter hook callback here
+	}
+
+	private function get_include_contents($filename) {
+		if(is_file($filename)) {
+			ob_start();
+			include $filename;
+			return ob_get_clean();
+		}
+		return false;
+	}
+
+	private function register_custom_post_type() {
+
 		register_post_type('review-centre', array(
 			'public' => true,
 			'labels' => array(
@@ -270,6 +333,7 @@ class Review_Centre {
 				),
 			'supports' => array(
 				'title',
+				'editor',
 				'custom-fields'
 				)
 			));
@@ -346,48 +410,41 @@ class Review_Centre {
 
 	}
 
-	/**
-	 * Register and enqueue public-facing style sheet.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+	private function define_shortcodes() {
+		$shortcodes = array(
+			array(
+				'shortcode' => 'review_form',
+				'callback' => 'show_review_form'
+				)
+			);
+
+		foreach($shortcodes as $shortcode) {
+			add_shortcode($shortcode['shortcode'], array($this, $shortcode['callback']));
+		}
 	}
 
-	/**
-	 * Register and enqueues public-facing JavaScript files.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+	public function show_review_form($attr) {
+		return $this->get_include_contents(plugin_dir_path(__FILE__) . 'views/review_form.php');
 	}
 
-	/**
-	 * NOTE:  Actions are points in the execution of a page or process
-	 *        lifecycle that WordPress fires.
-	 *
-	 *        Actions:    http://codex.wordpress.org/Plugin_API#Actions
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function action_method_name() {
-		// @TODO: Define your action hook callback here
-	}
-
-	/**
-	 * NOTE:  Filters are points of execution in which WordPress modifies data
-	 *        before saving it or sending it to the browser.
-	 *
-	 *        Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function filter_method_name() {
-		// @TODO: Define your filter hook callback here
+	private function accept_form_data() {
+		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['review_form'])) {
+			$r = (object) $_POST['review_form'];
+			// $name = $_POST['review_form_name'];
+			// $rating = $_POST['review_form_rating'];
+			// $email = $_POST['review_form_email'];
+			// $phone = $_POST['review_form_phone'];
+			// $experience = $_POST['review_form_experience'];
+			$post_id = wp_insert_post(array(
+				'post_status' => 'publish', 
+			    'post_type' => 'review-centre', 
+			    'post_title' => $r->name, 
+			    'post_content' => $r->experience
+				));
+			update_field('rating', $r->rating, $post_id);
+			update_field('email', $r->email, $post_id);
+			update_field('phone_number', $r->phone, $post_id);
+		}
 	}
 
 }
