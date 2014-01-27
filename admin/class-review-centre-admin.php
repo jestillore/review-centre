@@ -65,6 +65,7 @@ class Review_Centre_Admin {
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'add_plugin_settings' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_slug . '.php' );
@@ -177,6 +178,18 @@ class Review_Centre_Admin {
 			$this->plugin_slug,
 			array( $this, 'display_plugin_admin_page' )
 		);
+
+	}
+
+	public function add_plugin_settings() {
+
+		register_setting('review_centre_options', $this->plugin_slug, array($this, 'review_centre_validate'));
+
+	}
+
+	public function review_centre_validate($input) {
+
+
 
 	}
 
