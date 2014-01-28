@@ -411,6 +411,7 @@ class Review_Centre {
 	}
 
 	private function define_shortcodes() {
+
 		$shortcodes = array(
 			array(
 				'shortcode' => 'review_form',
@@ -421,13 +422,17 @@ class Review_Centre {
 		foreach($shortcodes as $shortcode) {
 			add_shortcode($shortcode['shortcode'], array($this, $shortcode['callback']));
 		}
+
 	}
 
 	public function show_review_form($attr) {
+
 		return $this->get_include_contents(plugin_dir_path(__FILE__) . 'views/review_form.php');
+
 	}
 
 	private function accept_form_data() {
+
 		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['review_form'])) {
 			$r = (object) $_POST['review_form'];
 			$post_id = wp_insert_post(array(
@@ -439,6 +444,8 @@ class Review_Centre {
 			update_field('rating', $r->rating, $post_id);
 			update_field('email', $r->email, $post_id);
 			update_field('phone_number', $r->phone, $post_id);
+			wp_mail(get_bloginfo('admin_email'), "New review from $r->name.", $r->experience);
+
 		}
 	}
 
