@@ -39,6 +39,8 @@ class Review_Centre_Admin {
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
+	protected $options = array();
+
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
@@ -172,7 +174,7 @@ class Review_Centre_Admin {
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
 		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'Review Management Settings', $this->plugin_slug ),
+			__( 'Review Centre', $this->plugin_slug ),
 			__( 'Review Centre', $this->plugin_slug ),
 			'manage_options',
 			$this->plugin_slug,
@@ -183,13 +185,82 @@ class Review_Centre_Admin {
 
 	public function add_plugin_settings() {
 
-		register_setting('review_centre_options', $this->plugin_slug, array($this, 'review_centre_validate'));
+		register_setting(
+			'review_centre_options',
+			$this->plugin_slug,
+			array($this, 'review_centre_validate')
+		);
+
+		add_settings_section(
+			'review_centre_section',
+			'Review Management Settings',
+			array(
+				$this,
+				'print_section_info'
+				),
+			$this->plugin_slug
+		);
+
+		add_settings_field(
+            'rating_range',
+            'Rating Range',
+            array(
+            	$this,
+            	'rating_range_callback'
+            	),
+            $this->plugin_slug,
+            'review_centre_section'       
+        );
+
+		add_settings_field(
+            'good_rating',
+            'Good Rating',
+            array(
+            	$this,
+            	'good_rating_callback'
+            	),
+            $this->plugin_slug,
+            'review_centre_section'       
+        );
 
 	}
 
 	public function review_centre_validate($input) {
 
-		
+		return $input;
+
+	}
+
+	public function rating_range_callback() {
+
+		printf(
+            '<input type="text" id="rating_range" name="' . $this->plugin_slug . '[rating_range]" value="%s" />',
+            isset( $this->options['rating_range'] ) ? esc_attr( $this->options['rating_range']) : ''
+        );
+
+	}
+
+	public function good_rating_callback() {
+
+		$select = '<select id="good_rating" name="' . $this->plugin_slug . '[good_rating]">';
+
+		for($x = 1; $x <= $this->options['rating_range']; $x++) {
+
+			$option = "
+			<option value='$x'" . ($this->options['good_rating'] == $x ? 'selected' : '') . ">$x</option>
+			";
+
+			$select .= $option;
+
+		}
+
+		$select .= '</select>';
+
+		printf($select);
+
+	}
+
+	public function print_section_info() {
 
 	}
 
@@ -199,7 +270,12 @@ class Review_Centre_Admin {
 	 * @since    1.0.0
 	 */
 	public function display_plugin_admin_page() {
+
+		$this->options = get_option($this->plugin_slug);
+
 		include_once( 'views/admin.php' );
+
+
 	}
 
 	/**
