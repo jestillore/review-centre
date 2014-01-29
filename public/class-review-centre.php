@@ -434,17 +434,35 @@ class Review_Centre {
 	private function accept_form_data() {
 
 		if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['review_form'])) {
+
 			$r = (object) $_POST['review_form'];
+
 			$post_id = wp_insert_post(array(
 				'post_status' => 'publish', 
 			    'post_type' => 'review-centre', 
 			    'post_title' => $r->name, 
 			    'post_content' => $r->experience
 				));
+
 			update_field('rating', $r->rating, $post_id);
 			update_field('email', $r->email, $post_id);
 			update_field('phone_number', $r->phone, $post_id);
+
 			wp_mail(get_bloginfo('admin_email'), "New review from $r->name.", $r->experience);
+
+			$options = get_option($this->plugin_slug);
+
+			if($r->rating < $options['good_rating']) {
+
+				// BAD REVIEW
+
+			}
+
+			else {
+
+				// GOOD REVIEW
+
+			}
 
 		}
 	}
